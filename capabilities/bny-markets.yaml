@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BNY Markets API
+  description: 'BNY Markets API. 1 operation. Lead operation: Get Markets Status. Self-contained Naftiko capability
+    covering the BNY Markets FX, securities finance, and execution surface.'
+  tags:
+  - BNY
+  - Markets
+  - Foreign Exchange
+  - Securities Finance
+  created: '2026-05-23'
+  modified: '2026-05-23'
+binds:
+- namespace: env
+  keys:
+    BNY_API_KEY: BNY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: bny-markets
+    baseUri: https://apigateway.bny.com
+    description: BNY Markets business capability. Self-contained, no shared references.
+    resources:
+    - name: status
+      path: /v1/status
+      operations:
+      - name: getstatus
+        method: GET
+        description: Get Markets Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.BNY_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: bny-markets-rest
+    port: 8080
+    description: REST adapter for BNY Markets. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/status
+      name: status
+      description: REST surface for status.
+      operations:
+      - method: GET
+        name: getstatus
+        description: Get Markets Status
+        call: bny-markets.getstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: bny-markets-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BNY Markets. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-markets-status
+      description: Get Markets Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: bny-markets.getstatus
+      outputParameters:
+      - type: object
+        mapping: $.

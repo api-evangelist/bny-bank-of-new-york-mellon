@@ -1,0 +1,133 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+provider: BNY (Bank of New York Mellon)
+providerId: bny-bank-of-new-york-mellon
+publisherName: The Bank of New York Mellon Corporation
+serviceCategory: Banking / Asset Servicing / Payments
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+notes: BNY does not expose a public usage-billing API for its developer marketplace.
+  FinOps shape inferred from per-transaction custody, payments, and execution models.
+  Meters list common billable units across Asset Servicing, Treasury Services,
+  Pershing, and Markets; replace with the contract-specific account-analysis line
+  items.
+tags:
+  - Banking
+  - Custody
+  - Asset Servicing
+  - Treasury Services
+  - Payments
+  - Pershing
+  - Markets
+  - FinOps
+  - FOCUS
+description: FOCUS-aligned FinOps scaffold for BNY developer marketplace APIs.
+  Treated as a per-transaction custody, payments, and execution model with negotiated
+  institutional pricing.
+sources:
+  - https://developer.bny.com/
+  - https://www.bny.com/corporate/global/en.html
+  - https://www.finops.org/framework/
+  - https://focus.finops.org/focus-specification/v1-3/
+billingModel:
+  pricingCategory: Per-Transaction + Negotiated
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Adjustment
+    - Refund
+focusColumns:
+  ServiceName: BNY Developer Marketplace APIs
+  ServiceCategory: Banking / Asset Servicing / Payments
+  ProviderName: BNY
+  PublisherName: The Bank of New York Mellon Corporation
+  InvoiceIssuerName: The Bank of New York Mellon Corporation
+  BillingCurrency: USD
+meters:
+  - name: custody_holdings
+    unit: position
+    aggregation: average
+    dimensions:
+      - account
+      - asset_class
+      - market
+  - name: fund_accounting_nav_calcs
+    unit: nav
+    aggregation: sum
+    dimensions:
+      - fund
+      - frequency
+  - name: ach_transactions
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - account
+      - direction
+      - sec_code
+  - name: wire_transactions
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - account
+      - currency
+      - direction
+  - name: rtp_transactions
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - account
+      - direction
+  - name: fx_trades
+    unit: trade
+    aggregation: sum
+    dimensions:
+      - account
+      - currency_pair
+      - tenor
+  - name: securities_loans
+    unit: loan
+    aggregation: average
+    dimensions:
+      - account
+      - asset_class
+      - collateral_type
+  - name: pershing_brokerage_transactions
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - account
+      - product_type
+  - name: api_requests
+    unit: request
+    aggregation: sum
+    dimensions:
+      - product
+      - account
+principles:
+  - name: Visibility
+    description: Reconcile usage against the monthly BNY account analysis / custody fee
+      statement; the BNY Developer Marketplace also exposes per-call telemetry for
+      some products.
+  - name: Allocation
+    description: Allocate by account number and product (Asset Servicing, Treasury
+      Services, Pershing, Markets) to mirror account-analysis line items.
+  - name: Optimization
+    description: Right-size between payment rails (RTP vs ACH vs Wire) for cost-per-payment;
+      reconcile FX margin against quoted rates; review custody fee tiers against
+      held positions.
+  - name: Accountability
+    description: Pair the BNY relationship / implementation manager with an internal
+      treasurer / operations / payments product owner; review quarterly.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

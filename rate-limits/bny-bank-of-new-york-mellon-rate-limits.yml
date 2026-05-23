@@ -1,0 +1,47 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: BNY (Bank of New York Mellon)
+providerId: bny-bank-of-new-york-mellon
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+notes: BNY does not publish a canonical rate-limit table for its marketplace APIs
+  in publicly accessible documentation. Limits are documented per product inside
+  the BNY Developer Marketplace (Nexen sign-on required) and governed by the client
+  agreement. Reconciliation blocked pending portal-level rate-limit documentation.
+tags:
+  - Banking
+  - Asset Servicing
+  - Treasury Services
+  - Payments
+  - Pershing
+  - Markets
+  - Rate Limiting
+description: Rate-limit artifact for BNY Asset Servicing, Treasury Services, Pershing,
+  and Markets APIs. No public per-second / per-minute number is canonical; limits
+  are enforced per product and per client.
+sources:
+  - https://developer.bny.com/
+responseCodes:
+  throttled: 429
+  serviceUnavailable: 503
+limits:
+  - name: Per-product, per-client throttle
+    scope: client/product
+    metric: varies
+    limit: see BNY Developer Marketplace product documentation
+policies:
+  - name: Backoff Strategy
+    description: Clients should implement exponential backoff with jitter on 429 / 503
+      responses and honor the Retry-After header when present.
+  - name: Idempotency
+    description: Payment- and order-class endpoints (wires, ACH, RTP, FX execution,
+      securities orders) require idempotency keys; safe retry depends on idempotency-key
+      reuse.
+  - name: Client-Provisioned Limits
+    description: Steady-state and burst limits are configured per client per product;
+      raises and whitelist changes go through the BNY implementation team.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,71 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: BNY Treasury Services API
+  description: 'BNY Treasury Services API. 1 operation. Lead operation: Get Treasury Services Status. Self-contained
+    Naftiko capability covering one BNY business surface.'
+  tags:
+  - BNY
+  - Treasury Services
+  - Payments
+  created: '2026-05-23'
+  modified: '2026-05-23'
+binds:
+- namespace: env
+  keys:
+    BNY_API_KEY: BNY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: bny-treasury-services
+    baseUri: https://apigateway.bny.com
+    description: BNY Treasury Services business capability. Self-contained, no shared references.
+    resources:
+    - name: status
+      path: /v1/status
+      operations:
+      - name: getstatus
+        method: GET
+        description: Get Treasury Services Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.BNY_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: bny-treasury-services-rest
+    port: 8080
+    description: REST adapter for BNY Treasury Services. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/status
+      name: status
+      description: REST surface for status.
+      operations:
+      - method: GET
+        name: getstatus
+        description: Get Treasury Services Status
+        call: bny-treasury-services.getstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: bny-treasury-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for BNY Treasury Services. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-treasury-services-status
+      description: Get Treasury Services Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: bny-treasury-services.getstatus
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,56 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: BNY (Bank of New York Mellon)
+providerId: bny-bank-of-new-york-mellon
+created: '2026-05-23'
+modified: '2026-05-23'
+reconciled: false
+notes: BNY does not publish a public price list for its developer / marketplace APIs.
+  Pricing for Asset Servicing, Treasury Services, Pershing, and Markets APIs is
+  determined per institutional client agreement. Sandbox access via the BNY Developer
+  Marketplace is unlocked after a Nexen sign-on; production scope follows a signed
+  master services or custody / clearing relationship. Reconciliation blocked pending
+  publicly available rate sheet.
+tags:
+  - Banking
+  - Custody
+  - Asset Servicing
+  - Treasury Services
+  - Payments
+  - Wealth Management
+  - Capital Markets
+  - Financial Services
+description: Plans artifact for BNY developer marketplace APIs. Commercial terms are
+  negotiated as part of an institutional custody, clearing, payments, or markets
+  relationship rather than a self-serve plan tier.
+sources:
+  - https://developer.bny.com/
+  - https://www.bny.com/corporate/global/en.html
+plans:
+  - id: bny-institutional-relationship
+    name: Institutional Relationship
+    type: enterprise
+    description: API access (Asset Servicing, Treasury Services, Pershing, Markets) is
+      unlocked as part of an underlying institutional custody, clearing, payments,
+      or markets relationship. Per-transaction fees, account-analysis credits, and
+      any monthly minimums are set in the client agreement, not on a public price list.
+    entries:
+      - label: Asset Servicing / Treasury Services / Pershing / Markets API Access
+        name: api_access
+        type: flat
+        metric: varies
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: contact BNY relationship manager
+        userMultiplied: false
+    elements:
+      - name: Underlying custody / clearing / payments relationship required
+      - name: KYC / AML / institutional onboarding
+      - name: Sandbox access via BNY Developer Marketplace (Nexen sign-on)
+      - name: Production scope unlocked per product (Asset Servicing, Treasury Services, Pershing, Markets)
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
