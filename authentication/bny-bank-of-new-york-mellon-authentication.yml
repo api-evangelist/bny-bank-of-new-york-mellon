@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/bny-asset-servicing-api-openapi.yml, openapi/bny-markets-api-openapi.yml, openapi/bny-pershing-api-openapi.yml,
+  openapi/bny-treasury-services-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/bny-asset-servicing-api-openapi.yml
+  - openapi/bny-markets-api-openapi.yml
+  - openapi/bny-pershing-api-openapi.yml
+  - openapi/bny-treasury-services-api-openapi.yml

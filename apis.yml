@@ -159,6 +159,10 @@ apis:
       - type: Testnet
         url: https://sepolia.etherscan.io/address/0xCC75D07cBC86f306A033af29508a1b98E2178264
 common:
+  - type: DomainSecurity
+    url: security/bny-bank-of-new-york-mellon-domain-security.yml
+  - type: Authentication
+    url: authentication/bny-bank-of-new-york-mellon-authentication.yml
   - type: Website
     url: https://www.bny.com
   - type: DeveloperPortal
