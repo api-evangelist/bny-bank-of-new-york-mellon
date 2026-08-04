@@ -1,0 +1,54 @@
+openapi: 3.1.0
+info:
+  title: BNY Asset Servicing API
+  description: >-
+    BNY Asset Servicing APIs expose custody, fund accounting, middle-office, transfer agency, ETF servicing, and
+    data & analytics surface to institutional clients through the BNY Developer Marketplace at developer.bny.com.
+    Operations are illustrative; full reference is published behind Nexen single sign-on.
+  version: '1.0'
+  contact:
+    name: BNY Developer Support
+    url: https://developer.bny.com/
+externalDocs:
+  description: BNY Developer Marketplace
+  url: https://developer.bny.com/
+servers:
+  - url: https://apigateway.bny.com
+    description: Production
+  - url: https://apigateway.qa.bny.com
+    description: Sandbox
+tags:
+  - name: Asset Servicing
+    description: Custody, fund accounting, middle-office, and transfer agency operations.
+security:
+  - bearerAuth: []
+paths:
+  /v1/status:
+    get:
+      operationId: getAssetServicingStatus
+      summary: Get Asset Servicing Status
+      description: >-
+        Returns the current status of the BNY Asset Servicing API surface.
+      tags:
+        - Asset Servicing
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  version:
+                    type: string
+        '401':
+          description: Unauthorized
+        '429':
+          description: Too many requests
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
